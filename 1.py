@@ -88,10 +88,10 @@ G = (x for x in range(4))
 
 L = []
 for x in range(10):
-    L.append(x**2)
+    L.append(x ** 2)
 L
 
-L = [x**2 for x in range(10)]
+L = [x ** 2 for x in range(10)]
 L
 
 
@@ -180,7 +180,7 @@ print(a)
 
 x1 = [1, 3, 5]
 y1 = [9, 12, 13]
-L = [x**2 for (x, y) in zip(x1, y1) if y > 0]
+L = [x ** 2 for (x, y) in zip(x1, y1) if y > 0]
 
 print(L)
 '''
@@ -408,11 +408,11 @@ print(line1(5), line2(4))
 
 
 def square_sum(a, b):
-    return a**2 + b**2
+    return a ** 2 + b ** 2
 
 
 def square_diff(a, b):
-    return a**2 - b**2
+    return a ** 2 - b ** 2
 
 print(square_sum(3, 4))
 print(square_diff(3, 22))
@@ -420,12 +420,12 @@ print(square_diff(3, 22))
 
 def square_sum(a, b):
     print("input: ", a, b)
-    return a**2 + b**2
+    return a ** 2 + b ** 2
 
 
 def square_diff(a, b):
     print("input ", a, b)
-    return a**2 - b**2
+    return a ** 2 - b ** 2
 
 print(square_sum(3, 22))
 print(square_diff(33, 22))
@@ -446,11 +446,11 @@ def decorator(F):
 
 @decorator
 def square_sum(a, b):
-    return a**2 + b**2
+    return a ** 2 + b ** 2
 
 
 def square_diff(a, b):
-    return a**2 - b**2
+    return a ** 2 - b ** 2
 
 print(square_sum(222, 222))
 print(square_diff(3343, 22))
@@ -465,12 +465,12 @@ def decorator(F):
 
 @decorator
 def square_sum(a, b):
-    return a**2 + b**2
+    return a ** 2 + b ** 2
 
 
 @decorator
 def square_diff(a, b):
-    return a**2 - b**2
+    return a ** 2 - b ** 2
 
 print(square_sum(22, 22))
 print(square_diff(33, 22))
@@ -493,12 +493,12 @@ def decorator(pre=''):
 
 @decorator('^_^')
 def square_sum(a, b):
-    return a**2 + b**2
+    return a ** 2 + b ** 2
 
 
 @decorator('^_^')
 def square_diff(a, b):
-    return a**2 - b**2
+    return a ** 2 - b ** 2
 
 print(square_sum(22, 22))
 print(square_diff(33, 22))
@@ -547,7 +547,7 @@ def xiangfan(x):
     def kaifang(x):
         def juedui(x):
             return abs(x)
-        return juedui(x)**0.5
+        return juedui(x) ** 0.5
     return -kaifang(x)
 
 print(xiangfan(-4))
@@ -563,7 +563,7 @@ def juedui(x):
 
 def kaifang(F):
     def new_F(x):
-        return F(x)**0.5
+        return F(x) ** 0.5
     return new_F
 
 
@@ -783,4 +783,54 @@ t = datetime.datetime(2016, 8, 2, 12, 11)
 delta1 = datetime.timedelta(seconds=600, weeks=4)
 print(t + delta1)
 
-print(t + dalta1.strftime())
+print(t + delta1.strftime())
+
+import os.path
+path = '/hoame/vamei/doc/file.txt'
+
+print(os.path.basename(path))
+print(os.path.dirname(path))
+info = os.path.split(path)
+print(info)
+path2 = os.path.join('/', 'home', 'vamei', 'doc', 'finel1.txt')
+print(path2)
+
+p_list = [path, path2]
+'''查询多个路径的共同部分'''
+print(os.path.commonprefix(p_list))
+
+os.path.normpath(path)
+
+import os.path
+path='/home/vamei/doc/file.txt'
+print(os.path.exists(path))
+print(os.path.getsize(path))
+print(os.path.getatime(path))
+print(os.path.getmtime(path))
+print(os.path.isfile(path))
+print(os.path.isdir(path))
+
+import glob
+print(glob.glob('/home/vamei/*'))
+
+import os
+os.mkdir('c:\ddd')
+os.mkdir('c:\ddd\ddd')
+
+import shutil
+shutil.copy('4.jpg','5.jpg')
+
+from datetime import datetime
+format = "output-%Y-%m-%d-%H%M%S.txt"
+str    = "output-1997-12-23-030000.txt"
+t      = datetime.strptime(str, format)
+print(t)
+
+from datetime import datetime
+format="output_%Y.%m.%d.%w.txt"
+str="output_1981.10.21.txt"
+myWeek=t.strftime("%W")
+# print(myWeek)
+# print(str[:len(str)-4])
+newT=str[:len(str)-4]+'.'+myWeek+'.txt'
+print(newT)
