@@ -51,7 +51,7 @@ for (index, char) in enumerate(S):
 
 ta = [1, 2, 3]
 tb = [9, 8, 7]
-tc = ['a', 'b', 'c']
+tc = ['a', 'b', 'c]
 for (a, b, c) in zip(ta, tb, tc):
     print(c, b, a)
 
@@ -123,6 +123,9 @@ print(list((filter(func, [111, 2, 33, 11, 3344, 111, 22]))))
 
 from functools import reduce
 print(reduce((lambda x, y: x + y), [22, 33, 22, 22, 11]))
+
+
+def test__fucn
 
 
 def test_func():
@@ -754,6 +757,9 @@ print(time.time())
 print(time.clock())
 
 import time
+import time
+
+import time
 print('start')
 time.sleep(10)
 print('wake up')
@@ -802,7 +808,7 @@ print(os.path.commonprefix(p_list))
 os.path.normpath(path)
 
 import os.path
-path='/home/vamei/doc/file.txt'
+path = '/home/vamei/doc/file.txt'
 print(os.path.exists(path))
 print(os.path.getsize(path))
 print(os.path.getatime(path))
@@ -818,19 +824,259 @@ os.mkdir('c:\ddd')
 os.mkdir('c:\ddd\ddd')
 
 import shutil
-shutil.copy('4.jpg','5.jpg')
+shutil.copy('4.jpg', '5.jpg')
 
 from datetime import datetime
 format = "output-%Y-%m-%d-%H%M%S.txt"
-str    = "output-1997-12-23-030000.txt"
-t      = datetime.strptime(str, format)
+str = "output-1997-12-23-030000.txt"
+t = datetime.strptime(str, format)
 print(t)
 
 from datetime import datetime
-format="output_%Y.%m.%d.%w.txt"
-str="output_1981.10.21.txt"
-myWeek=t.strftime("%W")
+format = "output_%Y.%m.%d.%w.txt"
+str = "output_1981.10.21.txt"
+myWeek = t.strftime("%W")
 # print(myWeek)
 # print(str[:len(str)-4])
-newT=str[:len(str)-4]+'.'+myWeek+'.txt'
+newT = str[:len(str) - 4] + '.' + myWeek + '.txt'
 print(newT)
+
+'''math包'''
+import math
+print(math.e)
+print(math.pi)
+print(math.ceil(123))
+print(math.floor(123))
+print(math.pow(123, 12))
+print(math.log(123))
+print(math.sqrt(123))
+
+'''random package'''
+import random
+
+random.seed(x)
+random.choice([11, 22, 33, 33])
+random.sample([111, 33, 22, 11], 3)
+random.shaffle([11, 22, 33, 11])
+
+import random
+print(random.random())
+print(random.random(11, 22))
+
+'''
+假设我们有一群人参加舞蹈比赛，为了公平起见，我们要随机排列他们的出场顺序。我们下面利用random包实现：
+'''
+import random
+all_people = ['Tom', 'vivian', 'Paul', 'Liya', 'Manu', 'Deniel', 'Shawn']
+random.shuffle(all_people)
+for i, name in enumerate(all_people):
+    print(i, ':' + name)
+
+'''创建sqllite数据库'''
+import sqlite3
+
+conn = sqlite3.connect("test.db")
+
+c = conn.cursor()
+
+c.execute('''CREATE TABLE category
+(id int primary key,sort int,name text)''')
+c.execute('''CREATE TABLE book
+(id int primary key,
+sort int,
+name text,
+price real,
+category int,
+FOREIGN KEY (category) REFERENCES category(id))''')
+
+conn.commit()
+conn.close()
+
+'''插入sqlite数据库'''
+
+import sqlite3
+
+conn = sqlite3.connect("test.db")
+c = conn.cursor()
+books = [(1, 1, 'Cook Recipe', 3.12, 1),
+         (2, 3, 'Python Intro', 17.5, 2),
+         (3, 2, 'OS Intro', 13.6, 2),
+         ]
+
+c.execute("INSERT INTO category VALUES(1,1,'kitchen')")
+
+c.executemany('INSERT INTO book VALUES(?,?,?,?,?)', books)
+
+conn.commit()
+conn.close()
+
+'''查询sqlite数据库'''
+import sqlite3
+
+conn = sqlite3.connect('test.db')
+c = conn.cursor()
+
+c.execute('SELECT name FROM category ORDER BY sort')
+print(c.fetchone())
+print(c.fetchone())
+
+c.execute('SELECT * FROM book WHERE book.category=1')
+print(c.fetchall())
+
+for row in c.execute('SELECT name,price FROM book ORDER BY sort'):
+    print(row)
+
+'''删除sqlite数据库'''
+import sqlite3
+conn = sqlite3.connect("test.db")
+c = conn.cursor()
+
+c.execute('UPDATE book SET price=? WHERE id=?', (1000, 1))
+c.execute('DELETE FROM book WHERE id=2')
+
+conn.commit()
+conn.close()
+
+import sqlite3
+conn = sqlite3.connect("test.db")
+c = conn.cursor()
+
+
+c.execute('SELECT name FROM category ORDER BY sort')
+print(c.fetchone())
+
+c.execute('SELECT * FROM book WHERE book.category=1')
+print(c.fetchall())
+
+for raw in c.execute('SELECT name,price FROM book ORDER BY sort'):
+    print(raw)
+
+c.execute('DROP TABLE book')
+
+'''relanch'''
+import sqlite3
+conn = sqlite3.connect("test.db")
+c = conn.cursor()
+
+c.execute('SELECT name FROM category ORDER BY sort')
+print(c.fetchone())
+
+c.execute('''CREATE TABLE book
+(id int primary key,
+sort int,
+name text,
+price real,
+category int,
+FOREIGN KEY (category) REFERENCES category(id))''')
+conn.commit()
+
+c.execute('SELECT * FROM book WHERE book.category=1')
+print(c.fetchall())
+
+for raw in c.execute('SELECT * FROM book'):
+    print(raw)
+
+import sqlite3
+conn = sqlite3.connect("test.db")
+c = conn.cursor()
+
+c.execute('SELECT name FROM category ORDER BY sort')
+print(c.fetchone())
+
+# c.execute('''CREATE TABLE book
+# (id int primary key,
+# fort int,
+# name text,
+# price real,
+# category int,
+# FOREIGN KEY(category) REFERENCES category(id))'''
+# )
+
+for raw in c.execute('SELECT * FROM book'):
+    print(raw)
+
+'''TCP socket
+在互联网上，我们可以让某台计算机作为服务器。服务器开放自己的端口，被动等待其他计算机连接。当其他计算机作为客户，主动使用socket连接到服务器的时候，服务器就开始为客户提供服务。
+
+在Python中，我们使用标准库中的socket包来进行底层的socket编程。
+
+首先是服务器端，我们使用bind()方法来赋予socket以固定的地址和端口，并使用listen()方法来被动的监听该端口。当有客户尝试用connect()方法连接的时候，服务器使用accept()接受连接，从而建立一个连接的socket：
+'''
+import socket
+
+HOST = ''
+PORT = 8000
+
+reply = 'Hello World'
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+
+s.listen(3)
+
+conn, addr = s.accept()
+
+request = conn.recv(1024)
+
+print('request is ', request)
+print('Connected by ', addr)
+
+conn.sendall(reply)
+conn.close()
+
+'''HTTP服务器端'''
+import socket
+
+# Address
+HOST = ''
+PORT = 8000
+
+# Prepare HTTP response
+text_content = '''HTTP/1.x 200 OK
+Content-Type: text/html
+
+<head>
+<title>WOW</title>
+</head>
+<html>
+<p>Wow, Python Server</p>
+<IMG src="test.jpg"/>
+</html>
+'''
+
+# Read picture, put into HTTP format
+f = open('test.jpg', 'rb')
+pic_content = '''
+HTTP/1.x 200 OK
+Content-Type: image/jpg
+
+'''
+pic_content = pic_content + f.read()
+f.close()
+
+# Configure socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+
+# infinite loop, server forever
+while True:
+    # 3: maximum number of requests waiting
+    s.listen(3)
+    conn, addr = s.accept()
+    request = conn.recv(1024)
+    method = request.split(' ')[0]
+    src = request.split(' ')[1]
+
+    # deal with GET method
+    if method == 'GET':
+        # ULR
+        if src == '/4.jpg':
+            content = pic_content
+        else:
+            content = text_content
+
+        print ('Connected by'), addr
+        print ('Request is:'), request
+        conn.sendall(content)
+    # close connection
+    conn.close()
