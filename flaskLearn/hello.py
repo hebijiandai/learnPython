@@ -9,6 +9,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager, Shell
 from flask.ext.mail import Mail, Message
+from threading import Thread
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -30,13 +31,22 @@ app.config['FLASKY_MAIL_SENDER'] = 'Flasky Admin<you@gmail.com']
 app.config['FLASKY_ADMIN'] = os.environ.get('FLASKY_ADMIN')
 mail = Mail(app)
 
+# 异步发邮件
+def send_async_email(app, msg):
+    with app.app_context():
+        mail.send(msg)
+
 def send_email(to, subject, template, **kwargs):
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
     sender = app.config['FLASKY_MAIL_SENDER'], recipients = [to])
     msg.body=render_template(template + '.txt', **kwargs)
     msg.html=render_template(template + '.html', **kwargs)
-    mail.send(msg)
+    # 此处为异步发送邮件处理
+    thr=Thread(target = send_async_email, args = [app, msg])
+    thr.start()
+    return thr
 
+#把数据库相关的事宜整合进shell
 def make_shell_context():
     return dict(app = app, db = db, User = User, Role = Role)
 manager.add_command('shell', Shell(make_context=make_shell_context))
@@ -78,46 +88,6 @@ class User(db.Model):
     def __repr__(self):
         return '<User {0}>'.format(self.name)
 
-# db.drop_all()
-# db.create_all()
-#
-# admin_role = Role(name="Admin")
-# mod_role = Role(name="Moderator")
-# user_role = Role(name='User')
-# user_john = User(username='john', role=admin_role)
-# user_susan = User(username='susan', role=mod_role)
-# user_david = User(username='david', role=user_role)
-#
-# db.session.add(admin_role)
-# db.session.add(mod_role)
-# db.session.add(user_role)
-# db.session.add(user_john)
-# db.session.add(user_susan)
-# db.session.add(user_david)
-#
-#
-#
-# db.session.commit()
-#
-# print(admin_role.id)
-# print(mod_role.id)
-# print(user_role.id)
-#
-# admin_role.name='Administrator'
-# db.session.add(admin_role)
-# db.session.commit()
-# print(admin_role.name)
-#
-# db.session.delete(mod_role)
-# db.session.commit()
-#
-# print(Role.query.all())
-#
-# print(Role.query.filter_by(name=admin_role.name).all())
-#
-# print(str(Role.query.filter_by(name=admin_role.name).first()))
-
-
 @app.route("/", methods = ['GET', 'POST'])
 def index():
     form=NameForm()
@@ -152,7 +122,8 @@ def index():
 #         session['name']=form.name.data
 #         form.name.data=''
 #         return redirect(url_for('index'))
-#     return render_template('index.html', form = form, name = session.get('name'), known = session.get('known', False))
+# return render_template('index.html', form = form, name =
+# session.get('name'), known = session.get('known', False))
 
 @app.route("/user/<name>")
 def user(name):
