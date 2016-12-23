@@ -30,7 +30,6 @@ if __name__ == "__main__":
     newMyMat = MyMat()
     MyMat.cli([1, 22, 33, 22], [33, 22, 33, 22])
 
-
 def func(a, b, c):
     print(a, b, c)
 
@@ -976,6 +975,7 @@ print(c.fetchall())
 for raw in c.execute('SELECT * FROM book'):
     print(raw)
 
+'''New Practice'''
 import sqlite3
 conn = sqlite3.connect("test.db")
 c = conn.cursor()
@@ -983,14 +983,7 @@ c = conn.cursor()
 c.execute('SELECT name FROM category ORDER BY sort')
 print(c.fetchone())
 
-# c.execute('''CREATE TABLE book
-# (id int primary key,
-# fort int,
-# name text,
-# price real,
-# category int,
-# FOREIGN KEY(category) REFERENCES category(id))'''
-# )
+c.execute('INSERT INTO book VALUES(2,3,"MY OWN",11,11)')
 
 for raw in c.execute('SELECT * FROM book'):
     print(raw)
@@ -1023,60 +1016,3 @@ print('Connected by ', addr)
 
 conn.sendall(reply)
 conn.close()
-
-'''HTTP服务器端'''
-import socket
-
-# Address
-HOST = ''
-PORT = 8000
-
-# Prepare HTTP response
-text_content = '''HTTP/1.x 200 OK
-Content-Type: text/html
-
-<head>
-<title>WOW</title>
-</head>
-<html>
-<p>Wow, Python Server</p>
-<IMG src="test.jpg"/>
-</html>
-'''
-
-# Read picture, put into HTTP format
-f = open('test.jpg', 'rb')
-pic_content = '''
-HTTP/1.x 200 OK
-Content-Type: image/jpg
-
-'''
-pic_content = pic_content + f.read()
-f.close()
-
-# Configure socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
-
-# infinite loop, server forever
-while True:
-    # 3: maximum number of requests waiting
-    s.listen(3)
-    conn, addr = s.accept()
-    request = conn.recv(1024)
-    method = request.split(' ')[0]
-    src = request.split(' ')[1]
-
-    # deal with GET method
-    if method == 'GET':
-        # ULR
-        if src == '/4.jpg':
-            content = pic_content
-        else:
-            content = text_content
-
-        print ('Connected by'), addr
-        print ('Request is:'), request
-        conn.sendall(content)
-    # close connection
-    conn.close()
